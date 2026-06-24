@@ -1,0 +1,103 @@
+Transaction Processing & Ranking System:
+
+Overview:
+This is a simple transaction processing system built with Django, Django REST Framework, SQLite, and Django Templates.
+
+The application allows users to create transactions, view transaction summaries for a specific user, and see a leaderboard based on a ranking score. The focus of this project is on clean API design, request validation, duplicate request prevention, consistent data handling, and fair ranking logic.
+
+Tech Stack:
+1. Python
+2. Django
+3. Django REST Framework
+4. SQLite
+5. Django Templates
+
+How to Run the Project:
+1. Clone the repository
+2. git clone <repository-url>
+3. cd Transaction_assignment
+4. Install dependencies
+5. pip install -r requirements.txt
+6. Apply migrations
+7. python manage.py migrate
+8. Start the server
+9. python manage.py runserver
+10. Open the application
+
+Frontend:
+http://127.0.0.1:8000/api/
+
+Admin:
+http://127.0.0.1:8000/admin/
+
+API Endpoints:
+1. Create Transaction
+    POST /api/transaction/
+
+Example Request:
+
+{
+    "transaction_id": "txn001",
+    "user_id": "user1",
+    "amount": 100
+}
+
+Creates a new transaction after validating the request data.
+
+2. User Summary
+    GET /api/summary/<user_id>/
+
+Example:
+
+/api/summary/user1/
+
+Returns:
+
+Total transaction count
+Total transaction amount
+User score
+
+3. Ranking
+    GET /api/ranking/
+
+Returns all users ranked by their calculated score in descending order.
+
+-> Ranking Logic:
+The ranking score is calculated using more than one factor:
+
+Score = (Total Amount × 0.6) + (Transaction Count × 20)
+
+This approach rewards both transaction value and user activity instead of relying on a single metric.
+
+-> Validation & Abuse Prevention
+
+The application performs basic validation before processing a transaction:
+
+1. Transaction amount must be greater than 0
+2. Minimum transaction amount is 10
+3. Required fields must be provided
+
+To reduce simple ranking manipulation, transactions below the minimum threshold are rejected.
+
+-> Duplicate Request Prevention
+
+Each transaction has a unique transaction_id.
+
+A database-level unique constraint ensures that the same transaction cannot be processed more than once, even if duplicate requests are submitted.
+
+-> Simultaneous Request Handling
+
+Transaction creation is performed inside a database transaction using Django's atomic transaction support.
+
+This ensures that a transaction is either fully completed or rolled back if an error occurs. Combined with the unique constraint on transaction_id, this prevents duplicate processing during concurrent requests.
+
+-> Assumptions
+Authentication was not required for this assignment.
+SQLite was used for simplicity and easy setup.
+User IDs are provided directly in transaction requests.
+Rankings are calculated dynamically from stored transaction data.
+Trade offs
+
+For simplicity, rankings and summaries are calculated directly from transaction records instead of maintaining separate aggregate tables.
+
+In a production-scale system, PostgreSQL, caching, and precomputed statistics could be used to improve performance for large datasets.

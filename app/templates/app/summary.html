@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Summary</title>
+</head>
+<body>
+
+<h1>User Summary</h1>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input
+        type="text"
+        name="user_id"
+        placeholder="Enter User ID"
+    >
+
+    <button type="submit">
+        Search
+    </button>
+</form>
+
+{% if data %}
+
+<h3>User: {{ data.user_id }}</h3>
+
+<p>Total Amount: {{ data.total_amount }}</p>
+
+<p>Total Transactions: {{ data.total_transactions }}</p>
+
+<p>Score: {{ data.score }}</p>
+
+{% endif %}
+
+<br>
+
+<a href="/api/">Home</a>
+
+</body>
+</html>

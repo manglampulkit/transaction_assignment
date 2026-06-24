@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ranking</title>
+</head>
+<body>
+
+<h1>Leaderboard</h1>
+
+<table border="1">
+
+<tr>
+    <th>Rank</th>
+    <th>User</th>
+    <th>Amount</th>
+    <th>Transactions</th>
+    <th>Score</th>
+</tr>
+
+{% for user in rankings %}
+
+<tr>
+    <td>{{ user.rank }}</td>
+    <td>{{ user.user_id }}</td>
+    <td>{{ user.total_amount }}</td>
+    <td>{{ user.total_transactions }}</td>
+    <td>{{ user.score }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<a href="/api/">Home</a>
+
+</body>
+</html>
